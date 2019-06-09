@@ -30,6 +30,7 @@ USER_HEADERS = .
 CPPFLAGS += -isystem $(GTEST_INCLUDE)
 
 # Flags passed to the C++ compiler.
+# Gtest requires the C++11-standard compliant compiler
 CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11 -O0
 
 # All tests produced by this Makefile.  Remember to add new tests you
