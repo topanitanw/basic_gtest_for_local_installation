@@ -14,7 +14,8 @@
 
 # Points to the root of Google Test, relative to where this file is.
 # Remember to tweak this if you move this file.
-GTEST_HOME = $(HOME)/usr/gtest
+GTEST_ROOT = $(shell git rev-parse --show-toplevel)/tools/googletest/googletest
+GTEST_HOME = $(GTEST_ROOT)
 GTEST_DIR = $(GTEST_HOME)
 GTEST_SRC = $(GTEST_HOME)/src
 GTEST_INCLUDE = $(GTEST_HOME)/include
