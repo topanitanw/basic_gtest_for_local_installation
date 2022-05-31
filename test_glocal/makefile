@@ -77,10 +77,10 @@ GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h # $(GTEST_HEADERS)
 # conservative and not optimized.  This is fine as Google Test
 # compiles fast and for ordinary users its source rarely changes.
 gtest-all.o : $(GTEST_SRCS_)
-	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -stdlib=libc++ -U__STRICT_ANSI__ -DGTEST_USE_OWN_TR1_TUPLE=1 -c $(GTEST_DIR)/src/gtest-all.cc
+	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -U__STRICT_ANSI__ -DGTEST_USE_OWN_TR1_TUPLE=1 -c $(GTEST_DIR)/src/gtest-all.cc
 
 gtest_main.o : $(GTEST_SRCS_)
-	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -stdlib=libc++ -U__STRICT_ANSI__ -DGTEST_USE_OWN_TR1_TUPLE=1 -c $(GTEST_DIR)/src/gtest_main.cc
+	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -U__STRICT_ANSI__ -DGTEST_USE_OWN_TR1_TUPLE=1 -c $(GTEST_DIR)/src/gtest_main.cc
 
 gtest.a : gtest-all.o
 	$(AR) $(ARFLAGS) $@ $^
@@ -96,17 +96,12 @@ gtest_main.a : gtest-all.o gtest_main.o
 # test_counter
 ############################################################
 test.o : test.cpp
-<<<<<<< HEAD:test_glocal/makefile
 	$(CXX) $(CPPFLAGS) -I$(USER_HEADERS) -I$(GTEST_INCLUDE) $(CXXFLAGS) \
 		$(COV_FLAGS) -c $< -o $@
-=======
-	$(CXX) $(CPPFLAGS) -I$(USER_HEADERS) -I$(GTEST_INCLUDE) $(CXXFLAGS) $(COV_FLAGS) -c $<
->>>>>>> f21af55efe8d33b856c5300fa515183c13d7c54c:test/makefile
 
 test : test.o gtest.a gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $(CXXFLAGS) $^ -o $@ $(LFLAGS)
 
-<<<<<<< HEAD:test_glocal/makefile
 test.gcda:
 	./test
 
@@ -116,10 +111,3 @@ cov: test.gcda
 	genhtml -o result test.info
 	gcovr --html -o result.html
 	gcovr -o result.txt
-=======
-# needs to use the binary in the tools/lcov/bin
-cov:
-	lcov -d . -t test -o test.info -b . -c
-	genhtml -o result test.info
-.PHONY: all clean cov
->>>>>>> f21af55efe8d33b856c5300fa515183c13d7c54c:test/makefile
