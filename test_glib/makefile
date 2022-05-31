@@ -14,6 +14,10 @@ CPPFLAGS += -isystem $(GTEST_INCLUDE)
 # Gtest requires the C++11-standard compliant compiler
 CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11 -O0
 
+COV_FLAGS = -fprofile-arcs -ftest-coverage
+
+LFLAGS = --coverage
+
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
 TESTS = test
@@ -21,7 +25,7 @@ TESTS = test
 
 # House-keeping build targets.
 .PHONY: all
-all : $(TESTS)
+all : $(TESTS) test.gcda cov
 
 .PHONY: clean
 clean :
@@ -33,11 +37,14 @@ clean :
 # test_counter
 ############################################################
 test.o : test.cpp
-	$(CXX) $(CPPFLAGS) -I$(USER_HEADERS) $(CXXFLAGS) \
+	$(CXX) $(CPPFLAGS) -I$(USER_HEADERS) $(CXXFLAGS) $(COV_FLAGS) \
 		-c $< -o $@
 
 test : test.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $(CXXFLAGS) $^ -o $@ -lgtest -lgtest_main
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $(CXXFLAGS) $^ -o $@ -lgtest -lgtest_main $(LFLAGS)
+
+test.gcda:
+	./test
 
 cov:
 	lcov -d . -t test -o test.info -b . -c
