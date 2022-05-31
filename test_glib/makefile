@@ -29,7 +29,8 @@ all : $(TESTS) test.gcda cov
 
 .PHONY: clean
 clean :
-	rm -f $(TESTS) *.o
+	rm -f $(TESTS) *.o gtest*.a result.* test.gc* test.info
+	rm -rf result
 
 # Builds gtest.a and gtest_main.a.
 
@@ -46,6 +47,9 @@ test : test.o
 test.gcda:
 	./test
 
-cov:
+.PHONY: cov
+cov: test.gcda
 	lcov -d . -t test -o test.info -b . -c
 	genhtml -o result test.info
+	gcovr test.info --html -o result.html
+	gcovr test.info -o result.txt
