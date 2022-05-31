@@ -33,10 +33,12 @@ TEST_COV_FLAGS = -fprofile-arcs -ftest-coverage
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 CPPFLAGS += -isystem $(GTEST_INCLUDE)
+LFLAGS = -lgcov --coverage
 endif
 
 ifeq ($(UNAME_S),Darwin)
 CPPFLAGS += -I$(GTEST_INCLUDE)
+LFLAGS = --coverage
 endif
 
 # Flags passed to the C++ compiler.
@@ -45,7 +47,6 @@ CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11 -O0
 
 COV_FLAGS = -fprofile-arcs -ftest-coverage
 
-LFLAGS = --coverage
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
@@ -95,12 +96,17 @@ gtest_main.a : gtest-all.o gtest_main.o
 # test_counter
 ############################################################
 test.o : test.cpp
+<<<<<<< HEAD:test_glocal/makefile
 	$(CXX) $(CPPFLAGS) -I$(USER_HEADERS) -I$(GTEST_INCLUDE) $(CXXFLAGS) \
 		$(COV_FLAGS) -c $< -o $@
+=======
+	$(CXX) $(CPPFLAGS) -I$(USER_HEADERS) -I$(GTEST_INCLUDE) $(CXXFLAGS) $(COV_FLAGS) -c $<
+>>>>>>> f21af55efe8d33b856c5300fa515183c13d7c54c:test/makefile
 
 test : test.o gtest.a gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $(CXXFLAGS) $^ -o $@ $(LFLAGS)
 
+<<<<<<< HEAD:test_glocal/makefile
 test.gcda:
 	./test
 
@@ -110,3 +116,10 @@ cov: test.gcda
 	genhtml -o result test.info
 	gcovr --html -o result.html
 	gcovr -o result.txt
+=======
+# needs to use the binary in the tools/lcov/bin
+cov:
+	lcov -d . -t test -o test.info -b . -c
+	genhtml -o result test.info
+.PHONY: all clean cov
+>>>>>>> f21af55efe8d33b856c5300fa515183c13d7c54c:test/makefile
