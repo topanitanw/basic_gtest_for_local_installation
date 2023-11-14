@@ -12,7 +12,7 @@ CPPFLAGS += -isystem $(GTEST_INCLUDE)
 
 # Flags passed to the C++ compiler.
 # Gtest requires the C++11-standard compliant compiler
-CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11 -O0
+CXXFLAGS += -g -Wall -Wextra -pthread -std=c++14 -O0
 
 COV_FLAGS = -fprofile-arcs -ftest-coverage
 
